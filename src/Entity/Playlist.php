@@ -95,16 +95,21 @@ class Playlist
     /**
      * @return Collection<int, string>
      */
-    public function getCategoriesPlaylist() : Collection
+    public function getCategoriesPlaylist(): Collection
     {
+        /** @var Collection<int, string> $categories */
         $categories = new ArrayCollection();
-        foreach($this->formations as $formation){
+        foreach ($this->formations as $formation) {
             $categoriesFormation = $formation->getCategories();
-            foreach($categoriesFormation as $categorieFormation)
-            if(!$categories->contains($categorieFormation->getName())){
-                $categories[] = $categorieFormation->getName();
+            foreach ($categoriesFormation as $categorieFormation) {
+                $categoryName = $categorieFormation->getName();
+
+                if ($categoryName !== null && !$categories->contains($categoryName)) {
+                    $categories->add($categoryName);
+                }
             }
         }
+
         return $categories;
     }
         

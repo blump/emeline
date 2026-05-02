@@ -15,7 +15,7 @@ class Formation
     /**
      * Début de chemin vers les images
      */
-    private const cheminImage = "https://i.ytimg.com/vi/";
+    private const CHEMIN_IMAGE = 'https://i.ytimg.com/vi/';
         
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -65,10 +65,12 @@ class Formation
         return $this;
     }
 
-    public function getPublishedAtString(): string {
-        if($this->publishedAt == null){
-            return "";
+    public function getPublishedAtString(): string
+    {
+        if ($this->publishedAt === null) {
+            return '';
         }
+
         return $this->publishedAt->format('d/m/Y');     
     }      
     
@@ -110,15 +112,23 @@ class Formation
 
     public function getMiniature(): ?string
     {
-        return self::cheminImage.$this->videoId."/default.jpg";
+        if ($this->videoId === null) {
+            return null;
+        }
+
+        return self::CHEMIN_IMAGE.$this->videoId.'/default.jpg';
     }
 
     public function getPicture(): ?string
     {
-        return self::cheminImage.$this->videoId."/hqdefault.jpg";
+        if ($this->videoId === null) {
+            return null;
+        }
+
+        return self::CHEMIN_IMAGE.$this->videoId.'/hqdefault.jpg';
     }
     
-    public function getPlaylist(): ?playlist
+    public function getPlaylist(): ?Playlist
     {
         return $this->playlist;
     }

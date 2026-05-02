@@ -30,10 +30,10 @@ class CategorieRepository extends ServiceEntityRepository
     
     /**
      * Retourne la liste des catégories des formations d'une playlist
-     * @param type $idPlaylist
-     * @return array
+     * @return Categorie[]
      */
-    public function findAllForOnePlaylist($idPlaylist): array{
+    public function findAllForOnePlaylist(int $idPlaylist): array
+    {
         return $this->createQueryBuilder('c')
                 ->join('c.formations', 'f')
                 ->join('f.playlist', 'p')
