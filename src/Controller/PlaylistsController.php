@@ -49,11 +49,16 @@ class PlaylistsController extends AbstractController
     #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
     public function sort(string $champ, string $ordre): Response
     {
-        if ($champ !== 'name') {
-            throw $this->createNotFoundException('Champ de tri inconnu.');
+        switch ($champ) {
+            case 'name':
+                $playlists = $this->playlistRepository->findAllOrderByName($ordre);
+                break;
+            case 'formations':
+                $playlists = $this->playlistRepository->findAllOrderByFormationCount($ordre);
+                break;
+            default:
+                throw $this->createNotFoundException('Champ de tri inconnu.');
         }
-
-        $playlists = $this->playlistRepository->findAllOrderByName($ordre);
 
         $categories = $this->categorieRepository->findAll();
         return $this->render("pages/playlists.html.twig", [
