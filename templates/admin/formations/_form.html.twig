@@ -1,0 +1,28 @@
+{{ form_start(formationForm) }}
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_row(formationForm.title) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_row(formationForm.publishedAt) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_row(formationForm.videoId) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_row(formationForm.playlist) }}
+        </div>
+    </div>
+    <div class="mb-3">
+        {{ form_row(formationForm.categories) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(formationForm.description) }}
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-primary" type="submit">{{ submit_label }}</button>
+        <a class="btn btn-secondary" href="{{ path('admin.formations.index') }}">Annuler</a>
+    </div>
+{{ form_end(formationForm) }}
