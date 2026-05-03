@@ -63,6 +63,7 @@ jobs:
             composer.lock \
             importmap.php \
             symfony.lock \
+            .env \
             .deploy/
           mkdir -p .deploy/var/cache .deploy/var/log
 
@@ -109,6 +110,6 @@ jobs:
               --exclude='var/' \
               ~/deploy-upload/ ~/www/
             cd ~/www
-            composer2 install --no-dev --optimize-autoloader --no-interaction --no-progress
+            APP_ENV=prod APP_DEBUG=0 composer2 install --no-dev --optimize-autoloader --no-interaction --no-progress
             mkdir -p var/cache var/log
             APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear --env=prod --no-debug
