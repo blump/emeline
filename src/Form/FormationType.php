@@ -25,7 +25,6 @@ class FormationType extends AbstractType
                 'label' => 'Date de publication',
                 'widget' => 'single_text',
                 'input' => 'datetime',
-                'required' => false,
             ])
             ->add('videoId', TextType::class, [
                 'label' => 'Identifiant YouTube',
@@ -39,7 +38,6 @@ class FormationType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Playlist',
                 'placeholder' => 'Choisir une playlist',
-                'required' => false,
             ])
             ->add('categories', EntityType::class, [
                 'class' => Categorie::class,

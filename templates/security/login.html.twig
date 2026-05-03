@@ -13,6 +13,7 @@
         {% endif %}
 
         <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             <div class="mb-3">
                 <label class="form-label" for="username">Identifiant</label>
                 <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required autofocus>
