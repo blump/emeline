@@ -9,6 +9,24 @@ jobs:
   test-and-deploy:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: mediatekformation
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      APP_ENV: test
+      DATABASE_URL: mysql://root:root@127.0.0.1:3306/mediatekformation?serverVersion=8.0&charset=utf8mb4
+
     steps:
       - name: Recuperer le code
         uses: actions/checkout@v5
@@ -17,12 +35,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          extensions: pdo_mysql, intl
+          coverage: none
 
       - name: Installer les dependances Composer
         run: composer install --no-interaction --prefer-dist
 
+      - name: Creer la base de test
+        run: php bin/console doctrine:database:create --env=test --if-not-exists
+
       - name: Lancer les tests
-        run: vendor/bin/phpunit
+        run: php bin/phpunit
 
       - name: Installer les dependances de production
         run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
