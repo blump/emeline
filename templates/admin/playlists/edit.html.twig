@@ -1,0 +1,12 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+    <div class="mt-4">
+        <h1 class="h3 mb-4">Modifier une playlist</h1>
+        <p class="text-muted">Cette playlist contient actuellement {{ playlist.nombreformations }} formation(s).</p>
+        {% include "admin/playlists/_form.html.twig" with {
+            playlistForm: playlistForm,
+            submit_label: "Enregistrer"
+        } %}
+    </div>
+{% endblock %}

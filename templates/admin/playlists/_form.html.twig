@@ -1,0 +1,12 @@
+{{ form_start(playlistForm) }}
+    <div class="mb-3">
+        {{ form_row(playlistForm.name) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(playlistForm.description) }}
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-primary" type="submit">{{ submit_label }}</button>
+        <a class="btn btn-secondary" href="{{ path('admin.playlists.index') }}">Annuler</a>
+    </div>
+{{ form_end(playlistForm) }}

@@ -1,0 +1,11 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+    <div class="mt-4">
+        <h1 class="h3 mb-4">Ajouter une playlist</h1>
+        {% include "admin/playlists/_form.html.twig" with {
+            playlistForm: playlistForm,
+            submit_label: "Ajouter"
+        } %}
+    </div>
+{% endblock %}
