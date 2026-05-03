@@ -22,7 +22,11 @@
                         <a class="nav-link" href="{{ path('playlists') }}">Playlists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin.formations.index') }}">Back office</a>
+                        {% if app.user %}
+                            <a class="nav-link" href="{{ path('admin.formations.index') }}">Back office</a>
+                        {% else %}
+                            <a class="nav-link" href="{{ path('app_login') }}">Back office</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
