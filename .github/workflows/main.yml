@@ -46,11 +46,25 @@ jobs:
       - name: Lancer les tests
         run: php bin/phpunit
 
-      - name: Installer les dependances de production
-        run: APP_ENV=prod composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-
-      - name: Vider le cache Symfony
-        run: APP_ENV=prod php bin/console cache:clear --env=prod --no-debug
+      - name: Preparer les fichiers de production
+        run: |
+          rm -rf .deploy
+          mkdir -p .deploy
+          rsync -a \
+            assets \
+            bin \
+            config \
+            migrations \
+            public \
+            src \
+            templates \
+            translations \
+            composer.json \
+            composer.lock \
+            importmap.php \
+            symfony.lock \
+            .deploy/
+          mkdir -p .deploy/var/cache .deploy/var/log
 
       - name: Deployer par FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -59,12 +73,28 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
-          local-dir: ./
+          local-dir: ./.deploy/
           server-dir: /www/
+          timeout: 120000
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            var/**
             .env.local
-            mediatekformation.sql
+            .env.*.local
+            var/**
+
+      - name: Installer les dependances sur alwaysdata
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          command_timeout: 15m
+          script: |
+            set -e
+            cd ~/www
+            composer2 install --no-dev --optimize-autoloader --no-interaction --no-progress
+            mkdir -p var/cache var/log
+            APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear --env=prod --no-debug
