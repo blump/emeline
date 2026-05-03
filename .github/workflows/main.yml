@@ -24,7 +24,6 @@ jobs:
           --health-retries=5
 
     env:
-      APP_ENV: test
       DATABASE_URL: mysql://root:root@127.0.0.1:3306/mediatekformation?serverVersion=8.0&charset=utf8mb4
 
     steps:
@@ -48,10 +47,10 @@ jobs:
         run: php bin/phpunit
 
       - name: Installer les dependances de production
-        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+        run: APP_ENV=prod composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
       - name: Vider le cache Symfony
-        run: php bin/console cache:clear --env=prod --no-debug
+        run: APP_ENV=prod php bin/console cache:clear --env=prod --no-debug
 
       - name: Deployer par FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
