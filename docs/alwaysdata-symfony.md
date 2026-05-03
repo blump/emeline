@@ -51,6 +51,36 @@ DATABASE_URL="mysql://<user>:<password>@mysql-<compte>.alwaysdata.net/<database>
 
 Le fichier `.env.local` ne doit pas etre versionne dans Git.
 
+## Dump de la base de donnees
+
+Depuis une connexion SSH Alwaysdata, il est possible de faire une sauvegarde SQL avec `mysqldump`.
+
+Creer d'abord un dossier pour les sauvegardes :
+
+```bash
+mkdir -p ~/backups
+```
+
+Commande de dump :
+
+```bash
+mysqldump -h mysql-<compte>.alwaysdata.net -u <user> -p <database> > ~/backups/mediatekformation.sql
+```
+
+Le mot de passe MySQL est demande apres l'execution de la commande.
+
+Pour generer un fichier date :
+
+```bash
+mysqldump -h mysql-<compte>.alwaysdata.net -u <user> -p <database> > ~/backups/mediatekformation-$(date +%Y-%m-%d_%H-%M-%S).sql
+```
+
+Pour restaurer un dump :
+
+```bash
+mysql -h mysql-<compte>.alwaysdata.net -u <user> -p <database> < ~/backups/mediatekformation.sql
+```
+
 ## Acces SSH pour deployer depuis GitHub
 
 Pour deployer depuis GitHub, il faut disposer d'un acces SSH Alwaysdata :
